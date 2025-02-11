@@ -8,6 +8,8 @@ import lombok.*;
 @Entity
 @Table(name = "starship")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Starship {
 
     @Schema(description = "The id of the starship")

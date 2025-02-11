@@ -8,6 +8,34 @@ spring:
     user:
       name: user
       password: 123456
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+rabbitmq:
+  # RabbitMQ Custom Properties
+  queue:
+    name: starship.queue
+  exchange:
+    name: starship.exchange
+  routing:
+    key: starship.routing.key
+
+  #datasource:
+  #  url: jdbc:h2:mem:starshipdb
+  #  username: sa
+  #  password: password
+  #  driverClassName: org.h2.Driver
+  #jpa:
+  #  database-platform: org.hibernate.dialect.H2Dialect
+  #  hibernate:
+  #    ddl-auto: none
 
 logging:
   level:

@@ -28,6 +28,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jjwt.version>0.12.6</jjwt.version>
         <sonar.version>4.0.0.4121</sonar.version>
+        <kafka.version>3.1.2</kafka.version>
+        <rabbitmq.version>3.2.2</rabbitmq.version>
     </properties>
 
     <!--<dependencyManagement>
@@ -100,10 +102,11 @@
         </dependency>
 
         <!-- Liquibase for database migrations -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-        </dependency>-->
+            <version>4.20.0</version>
+        </dependency>
 
         <!-- Redis Cache -->
         <!--<dependency>
@@ -112,10 +115,18 @@
         </dependency>-->
 
         <!-- Kafka Consumer/Producer -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
-        </dependency>-->
+            <version>${kafka.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+            <version>${rabbitmq.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
