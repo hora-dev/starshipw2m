@@ -27,6 +27,7 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jjwt.version>0.12.6</jjwt.version>
+        <sonar.version>4.0.0.4121</sonar.version>
     </properties>
 
     <!--<dependencyManagement>
@@ -91,7 +92,12 @@
             <version>${swagger.version}</version>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/org.sonarsource.scanner.maven/sonar-maven-plugin -->
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>${sonar.version}</version>
+        </dependency>
 
         <!-- Liquibase for database migrations -->
         <!--<dependency>
