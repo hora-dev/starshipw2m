@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,9 @@ public class StarshipServiceImpl implements StarshipUseCase {
         return starshipRepository.findAll(pageable);
     }
 
+    @Cacheable(value = "starships", key = "#id")  // Guarda en caché por ID
     public Starship getStarshipById(Long id) {
+        log.info("Buscando nave en la base de datos...");
         return starshipRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found"));
     }

@@ -4,13 +4,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Schema(name = "Starship", description = "Starship object saving the id and name of a starship")
 @Entity
 @Table(name = "starship")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Starship {
+public class Starship implements Serializable {
 
     @Schema(description = "The id of the starship")
     @Id

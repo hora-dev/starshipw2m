@@ -18,6 +18,13 @@ spring:
     username: guest
     password: guest
     connection-timeout: 10s  # Espera 10s antes de fallar la conexión
+  cache:
+    type: redis
+  redis:
+    host: redis
+    port: 6379
+    timeout: 5000ms
+    connection-timeout: 10s  # Espera 10s antes de fallar la conexión
 
 
 rabbitmq:
