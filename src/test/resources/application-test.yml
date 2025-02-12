@@ -17,6 +17,12 @@ spring:
     port: 5672
     username: guest
     password: guest
+  redis:
+    host: localhost
+    port: 0  # Puerto inválido para evitar la conexión a Redis
+  cache:
+    type: none  # Deshabilita el cache completamente
+
 
 rabbitmq:
   # RabbitMQ Custom Properties

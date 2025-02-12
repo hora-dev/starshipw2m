@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import org.springframework.http.HttpStatus;
 
 //@ExtendWith(MockitoExtension.class)
 @SpringBootTest
+@ActiveProfiles("test")
 class StarshipServiceImplTest {
 
     @MockBean
