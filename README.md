@@ -1,18 +1,25 @@
 
 # starshipw2m
-A Spring Rest API for CRUD operations on starships
+### A Spring Rest API for CRUD operations on starships
 
+<br>
 
+### Check open api documentation at: 
+http://localhost:8091/swagger-ui/index.html
+
+<br>
 
 ### Test coverage with sonar
 #### 1. docker run -d --name sonar -p 9000:9000 sonarqube:lts
 #### 2. mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
 
+<br>
 
 ### Connect Broker Rabbit
 #### 1. docker-compose up -d
 #### 2. check console at http://localhost:15672/ (user = guest, password = guest)
 
+<br>
 
 ### Docker
 
@@ -25,6 +32,7 @@ A Spring Rest API for CRUD operations on starships
 #### Option 2: run docker compose
 ##### 1. docker-compose up
 
+<br>
 
 ### Start application
 #### 3. mvn spring-boot:run
