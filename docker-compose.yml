@@ -1,0 +1,27 @@
+services:
+
+  starshipw2m:
+    build: .
+    image: starshipw2m
+    container_name: starshipw2m
+    ports:
+      - "8091:8091"
+    depends_on:
+      rabbitmq:
+        condition: service_started
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # RabbitMQ default port
+      - "15672:15672"  # Management UI port
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+
+volumes:
+  rabbitmq_data:

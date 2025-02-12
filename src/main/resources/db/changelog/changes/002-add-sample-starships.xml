@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="002" author="w2m">
+        <insert tableName="starship">
+            <column name="name" value="Nabudoconosor"/>
+        </insert>
+        <insert tableName="starship">
+            <column name="name" value="Millennium Falcon"/>
+        </insert>
+        <insert tableName="starship">
+            <column name="name" value="Death Star"/>
+        </insert>
+
+        <rollback>
+            <delete tableName="starship">
+                <where>name in ('USS Enterprise', 'Millennium Falcon', 'Battlestar Galactica')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

@@ -1,5 +1,6 @@
 package com.w2m.starship.service;
 
+import com.w2m.starship.application.messaging.StarshipEvent;
 import com.w2m.starship.application.service.StarshipServiceImpl;
 import com.w2m.starship.domain.model.Starship;
 import com.w2m.starship.infraestructure.adapter.outbound.StarshipRepository;
@@ -9,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,13 +25,18 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.springframework.http.HttpStatus;
 
-@ExtendWith(MockitoExtension.class)
+//@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class StarshipServiceImplTest {
 
-    @Mock
+    @MockBean
+    private RabbitTemplate rabbitTemplate;
+
+    @MockBean
     private StarshipRepository starshipRepository;
 
-    @InjectMocks
+    //@InjectMocks
+    @Autowired
     private StarshipServiceImpl starshipService;
 
     private Starship starship;
@@ -80,6 +90,9 @@ class StarshipServiceImplTest {
         assertNotNull(result);
         assertEquals("Millennium Falcon", result.getName());
         verify(starshipRepository).save(starship);
+        //verify(rabbitTemplate).convertAndSend(anyString(), anyString(), anyString());
+        verify(rabbitTemplate).convertAndSend(eq("starship.exchange"), eq("starship.routing.key"), any(StarshipEvent.class));
+
     }
 
     @Test
@@ -108,6 +121,8 @@ class StarshipServiceImplTest {
     @Test
     void deleteStarship_WhenExists_ShouldDelete() {
         when(starshipRepository.existsById(1L)).thenReturn(true);
+        when(starshipRepository.findById(1L)).thenReturn(Optional.of(starship)); // ✅ Mockea la búsqueda
+
         doNothing().when(starshipRepository).deleteById(1L);
 
         assertDoesNotThrow(() -> starshipService.deleteStarship(1L));
