@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StarshipConsumer {
 
+    public static final String PROCESSING_STARSHIP = "Processing starship ";
+
     @RabbitListener(queues = "${rabbitmq.queue.name}")
     public void handleStarshipEvent(StarshipEvent event) {
         log.info("Received starship event: {}", event);
@@ -29,18 +31,18 @@ public class StarshipConsumer {
     }
 
     private void handleStarshipCreated(Starship starship) {
-        log.info("Processing starship created: {}", starship);
+        log.info(PROCESSING_STARSHIP + "created: {}", starship);
     }
 
     private void handleStarshipUpdated(Starship starship) {
-        log.info("Processing starship updated: {}", starship);
+        log.info(PROCESSING_STARSHIP + "updated: {}", starship);
     }
 
     private void handleStarshipDeleted(Long id) {
-        log.info("Processing starship deleted with ID: {}", id);
+        log.info(PROCESSING_STARSHIP + "deleted with ID: {}", id);
     }
 
     private void handleStarshipFindAll(Starship starship) {
-        log.info("Processing starship find all: {}", starship);
+        log.info(PROCESSING_STARSHIP + "find all: {}", starship);
     }
 }
