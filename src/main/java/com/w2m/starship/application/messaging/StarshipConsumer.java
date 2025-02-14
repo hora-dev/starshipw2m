@@ -13,7 +13,6 @@ public class StarshipConsumer {
     public void handleStarshipEvent(StarshipEvent event) {
         log.info("Received starship event: {}", event);
 
-        // Aquí puedes implementar la lógica específica según el tipo de evento
         switch (event.getAction()) {
             case "CREATED":
                 handleStarshipCreated(event.getStarship());

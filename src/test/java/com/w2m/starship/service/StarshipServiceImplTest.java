@@ -6,10 +6,6 @@ import com.w2m.starship.domain.model.Starship;
 import com.w2m.starship.infraestructure.adapter.outbound.StarshipRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,15 +14,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.HttpClientErrorException;
+
 import java.util.List;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import org.springframework.http.HttpStatus;
 
-//@ExtendWith(MockitoExtension.class)
 @SpringBootTest
 @ActiveProfiles("test")
 class StarshipServiceImplTest {
@@ -37,7 +34,6 @@ class StarshipServiceImplTest {
     @MockBean
     private StarshipRepository starshipRepository;
 
-    //@InjectMocks
     @Autowired
     private StarshipServiceImpl starshipService;
 
@@ -92,7 +88,6 @@ class StarshipServiceImplTest {
         assertNotNull(result);
         assertEquals("Millennium Falcon", result.getName());
         verify(starshipRepository).save(starship);
-        //verify(rabbitTemplate).convertAndSend(anyString(), anyString(), anyString());
         verify(rabbitTemplate).convertAndSend(eq("starship.exchange"), eq("starship.routing.key"), any(StarshipEvent.class));
 
     }

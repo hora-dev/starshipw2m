@@ -40,7 +40,7 @@ public class StarshipServiceImpl implements StarshipUseCase {
         return starshipRepository.findAll(pageable);
     }
 
-    @Cacheable(value = "starships", key = "#id")  // Guarda en caché por ID
+    @Cacheable(value = "starships", key = "#id")
     public Starship getStarshipById(Long id) {
         log.info("Buscando nave en la base de datos...");
         return starshipRepository.findById(id)

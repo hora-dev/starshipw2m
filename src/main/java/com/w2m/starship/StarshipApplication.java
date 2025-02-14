@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class} )
-@EnableCaching  // 🔥 Activa el caché en Spring Boot
+@EnableCaching
 public class StarshipApplication {
     public static void main(String[] args) {
         SpringApplication.run(StarshipApplication.class, args);
