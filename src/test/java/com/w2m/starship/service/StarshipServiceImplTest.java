@@ -118,7 +118,7 @@ class StarshipServiceImplTest {
     @Test
     void deleteStarship_WhenExists_ShouldDelete() {
         when(starshipRepository.existsById(1L)).thenReturn(true);
-        when(starshipRepository.findById(1L)).thenReturn(Optional.of(starship)); // ✅ Mockea la búsqueda
+        when(starshipRepository.findById(1L)).thenReturn(Optional.of(starship));
 
         doNothing().when(starshipRepository).deleteById(1L);
 
