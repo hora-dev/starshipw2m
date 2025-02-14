@@ -23,14 +23,19 @@ http://localhost:8091/swagger-ui/index.html
 
 ### Docker
 
+<br>
+
 #### Option 1: Start rabbit with docker compose && create starshipw2mdocker image manually
 #### 1. move to infra/rabbitmq/ and run docker-compose up -d
 #### 2. move again to root and run mvn clean package 
 #### 3. docker build -t starshipw2m .
 #### 4. docker run -p 8091:8091 starshipw2m
 
-#### Option 2: run docker compose
-##### 1. docker-compose up
+<br>
+
+#### Option 2: build jar && run docker compose
+#### 1. mvn clean package
+#### 2. docker-compose up
 
 <br>
 
