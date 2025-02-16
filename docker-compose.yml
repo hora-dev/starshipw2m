@@ -1,20 +1,28 @@
+
 services:
 
   starshipw2m:
+    networks:
+      - my_network
     build: .
     image: starshipw2m
-    container_name: starshipw2m
+    container_name: starshipw2m_container
     ports:
       - "8091:8091"
+    environment:
+      - SPRING_REDIS_HOST=redis_service
+      - SPRING_REDIS_PORT=6379
     depends_on:
       rabbitmq:
         condition: service_started
-      redis:
+      redis_service:
         condition: service_started
 
   rabbitmq:
+    networks:
+      - my_network
     image: rabbitmq:3-management
-    container_name: rabbitmq
+    container_name: rabbitmq_container
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -24,11 +32,18 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  redis:
-    image: redis:alpine
-    container_name: redis
+  redis_service:
+    networks:
+      - my_network
+    image: redis:latest
+    container_name: redis_service_container
+    command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379"]
     ports:
       - "6379:6379"
 
 volumes:
   rabbitmq_data:
+
+networks:
+  my_network:
+    driver: bridge

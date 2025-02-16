@@ -17,6 +17,7 @@ public class SpringSecurityConfig {
 
 
         http.csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests( authorize -> authorize
                         .anyRequest()
                         .authenticated())

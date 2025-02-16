@@ -20,7 +20,7 @@ spring:
   cache:
     type: redis
   redis:
-    host: redis
+    host: redis_service
     port: 6379
     timeout: 5000ms
     connection-timeout: 10s
