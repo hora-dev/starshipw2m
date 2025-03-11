@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -47,25 +49,26 @@ public class StarshipServiceImpl implements StarshipUseCase {
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found"));
     }
 
-    public Starship createStarship(Starship starship) {
+    public Starship createStarship(String starshipName) {
+        Starship starship = new Starship(null, starshipName);
+        starship = starshipRepository.save(starship);
         sendStarshipEvent("CREATED", starship);
-        return starshipRepository.save(starship);
+        return starship;
     }
 
-    public Starship updateStarship(Long id, Starship starship) {
-        if (!starshipRepository.existsById(id)) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found");
-        }
-        starship.setId(id);
+    @CachePut(value = "starship_redis", key = "#id")
+    public Starship updateStarship(Long id, String starshipName) {
+        Starship starship = starshipRepository.findById(id)
+                .orElseThrow( () -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found") );
+        starship.setName(starshipName);
         sendStarshipEvent("UPDATED", starship);
         return starshipRepository.save(starship);
     }
 
+    @CacheEvict(value = "starship_redis", key = "#id")
     public void deleteStarship(Long id) {
-        if (!starshipRepository.existsById(id)) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found");
-        }
-        Starship s = getStarshipById(id);
+        Starship s = starshipRepository.findById(id)
+                .orElseThrow( () -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + id + " not found") );
         starshipRepository.deleteById(id);
         sendStarshipEvent("DELETED", s);
     }

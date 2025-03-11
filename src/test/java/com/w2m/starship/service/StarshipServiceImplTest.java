@@ -81,60 +81,60 @@ class StarshipServiceImplTest {
 
     @Test
     void createStarship_ShouldSaveAndReturnStarship() {
-        when(starshipRepository.save(starship)).thenReturn(starship);
+        when(starshipRepository.save(any(Starship.class))).thenReturn(starship);
 
-        Starship result = starshipService.createStarship(starship);
+        Starship result = starshipService.createStarship(starship.getName());
 
         assertNotNull(result);
         assertEquals("Millennium Falcon", result.getName());
-        verify(starshipRepository).save(starship);
+        verify(starshipRepository).save(any(Starship.class));
         verify(rabbitTemplate).convertAndSend(eq("starship.exchange"), eq("starship.routing.key"), any(StarshipEvent.class));
 
     }
 
     @Test
     void updateStarship_WhenExists_ShouldUpdateAndReturnStarship() {
-        when(starshipRepository.existsById(1L)).thenReturn(true);
+        when(starshipRepository.findById(1L)).thenReturn(Optional.of(starship));
         when(starshipRepository.save(starship)).thenReturn(starship);
 
-        Starship result = starshipService.updateStarship(1L, starship);
+        Starship result = starshipService.updateStarship(1L, "starship new name");
 
         assertNotNull(result);
         assertEquals(1L, result.getId());
-        verify(starshipRepository).existsById(1L);
+        assertEquals("starship new name", result.getName());
+        verify(starshipRepository).findById(1L);
         verify(starshipRepository).save(starship);
     }
 
     @Test
     void updateStarship_WhenNotFound_ShouldThrowException() {
-        when(starshipRepository.existsById(2L)).thenReturn(false);
+        when(starshipRepository.findById(2L)).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + 2L + " not found"));
 
-        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> starshipService.updateStarship(2L, starship));
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> starshipService.updateStarship(2L, starship.getName()));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        verify(starshipRepository).existsById(2L);
+        verify(starshipRepository).findById(2L);
     }
 
     @Test
     void deleteStarship_WhenExists_ShouldDelete() {
-        when(starshipRepository.existsById(1L)).thenReturn(true);
         when(starshipRepository.findById(1L)).thenReturn(Optional.of(starship));
 
         doNothing().when(starshipRepository).deleteById(1L);
 
         assertDoesNotThrow(() -> starshipService.deleteStarship(1L));
-        verify(starshipRepository).existsById(1L);
+        verify(starshipRepository).findById(1L);
         verify(starshipRepository).deleteById(1L);
     }
 
     @Test
     void deleteStarship_WhenNotFound_ShouldThrowException() {
-        when(starshipRepository.existsById(2L)).thenReturn(false);
+        when(starshipRepository.findById(2L)).thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND, "Starship id " + 2L + " not found"));
 
         HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> starshipService.deleteStarship(2L));
 
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
-        verify(starshipRepository).existsById(2L);
+        verify(starshipRepository).findById(2L);
     }
 
     @Test

@@ -39,14 +39,14 @@ public class StarshipController {
 
     @Operation(summary = "Create a starship and save it on db")
     @PostMapping
-    public ResponseEntity<Starship> createStarship(@RequestBody Starship starship) {
-        return ResponseEntity.ok(starShipService.createStarship(starship));
+    public ResponseEntity<Starship> createStarship(@RequestBody String starshipName) {
+        return ResponseEntity.ok(starShipService.createStarship(starshipName));
     }
 
     @Operation(summary = "Update a starship searching by its id")
     @PutMapping("{id}")
-    public ResponseEntity<Starship> updateStarship(@PathVariable Long id, @RequestBody Starship spacecraft) {
-        return ResponseEntity.ok(starShipService.updateStarship(id, spacecraft));
+    public ResponseEntity<Starship> updateStarship(@PathVariable Long id, @RequestBody String starshipName) {
+        return ResponseEntity.ok(starShipService.updateStarship(id, starshipName));
     }
 
     @Operation(summary = "Delete a starship searching by its id")
